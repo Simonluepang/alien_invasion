@@ -4,6 +4,7 @@ from ship import Ship
 from alien import Alien
 import game_functions as gf# 给导入的模块game_function指定了别名gf
 from pygame.sprite import Group
+from game_stats import GameStats 
 
 def run_game():
 	# 初始化pygame、设置和屏幕对象
@@ -11,6 +12,9 @@ def run_game():
 	ai_settings = Settings()
 	screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))# 创建窗口的大小
 	pygame.display.set_caption('Alien Invasion')# 创建窗口的名称
+
+	# 创建一个用于存储游戏统计信息的实例
+	stats = GameStats(ai_settings)
 
 	# 创建一艘飞船、一个子弹编组和一个外星人编组
 	ship = Ship(ai_settings, screen)# 在主循环外创建实例，以免每次循环时都创建一艘飞船
@@ -23,9 +27,11 @@ def run_game():
 	# 开始游戏的主循环
 	while True:# 包含一个事件循环以及管理屏幕更新的代码
 		gf.check_events(ai_settings, screen, ship, bullets)# 检测键盘事件
-		ship.update()# 飞船位置更新
-		gf.update_bullets(bullets)
-		gf.update_screen(ai_settings, screen, ship, bullets, aliens)# 更新屏幕
+		if stats.game_active:
+			ship.update()# 飞船位置更新
+			gf.update_bullets(aliens, bullets, ai_settings, screen, ship)
+			gf.update_aliens(ai_settings, aliens, ship, stats, screen, bullets)
+			gf.update_screen(ai_settings, screen, ship, bullets, aliens)# 更新屏幕
 
 	gf.update_screen(ai_settings, screen, ship, bulets, aliens)
 run_game()
