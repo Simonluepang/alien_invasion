@@ -78,7 +78,7 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
 	if len(aliens) == 0:
 		# 删除现有的子弹并新建一群外星人
 		bullets.empty()
-		create_fleet(ai_settings, screen, ship, aliens)
+		create_fleet(ai_settings, screen, aliens, ship)
 
 def fire_bullet(ai_settings, screen, ship, bullets):
 	"""如果还没有到达限制，就发射一颗子弹"""
